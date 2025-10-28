@@ -102,58 +102,35 @@ function getProductData() {
 
     // Команда /clear
     bot.command('clear', async (ctx) => {
-        // const messages = getAllMessages();
-        // console.log('Сообщения из базы для удаления:', messages);
+        const messages = getAllMessages();
+        console.log('Сообщения из базы для удаления:', messages);
 
-        // const deletePromisesDB = messages.map(async (id) => {
-        //     try {
-        //         await ctx.deleteMessage(id);
-        //     } catch (e) {
-        //         console.log(`Не удалось удалить сообщение ${id} из базы: ${e.message}`);
-        //     }
-        // });
-        // await Promise.all(deletePromisesDB);
-
-        // let i = 0;
-        // while (true) {
-        //     try {
-        //         await ctx.deleteMessage(ctx.message.message_id - i++);
-        //     } catch (e) {
-        //         break;
-        //     }
-        // }
-
-        // clearDB();
-
-        // const sentMessage = await ctx.reply('Чат очищен!');
-        // setTimeout(() => {
-        //     ctx.deleteMessage(sentMessage.message_id).catch(e => {
-        //         console.log('Не удалось удалить сообщение о очистке:', e.message);
-        //     });
-        // }, 1000);
-        const messages = getAllMessages()
-        console.log('Сообщения из базы для удаления:', messages)
-
-        const deletePromisesDB = message.map(async (id) => {
+        const deletePromisesDB = messages.map(async (id) => {
             try {
-                await ctx.deleteMessage()
-            } catch {
+                await ctx.deleteMessage(id);
+            } catch (e) {
                 console.log(`Не удалось удалить сообщение ${id} из базы: ${e.message}`);
             }
-        })
-        await Promise.all(deletePromisesDB)
+        });
+        await Promise.all(deletePromisesDB);
 
-        let i = 0
-        while(true) {
+        let i = 0;
+        while (true) {
             try {
-                await ctx.deleteMessage(ctx.message.message_id - i++)
-            } catch(e) {
-                break
+                await ctx.deleteMessage(ctx.message.message_id - i++);
+            } catch (e) {
+                break;
             }
         }
-        clearDB()
-        const sentMessage = ctx.reply('Чат очищен!')
-        setTimeout()
+
+        clearDB();
+
+        const sentMessage = await ctx.reply('Чат очищен!');
+        setTimeout(() => {
+            ctx.deleteMessage(sentMessage.message_id).catch(e => {
+                console.log('Не удалось удалить сообщение о очистке:', e.message);
+            });
+        }, 1000);
     });
 
 
