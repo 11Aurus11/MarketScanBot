@@ -40,39 +40,40 @@ export default async function parseProduct(platform, productId) {
         if(platform === 'wb') {
             await page.goto(url, {waitUntil: 'domcontentloaded', timeout: 15000})
             console.log('Страница загружена:', await page.title());
-
+            //ye Название товара
             try {
                 await page.waitForSelector('h3')
                 title = await page.$eval('h3', el => el.innerText.trim());
             } catch {
                 title = 'Название не найдено';
             }
-
+            //ye Цена товара
             try {
                 price = await page.$eval(`[class*='priceBlockFinalPrice']`, el => el.innerText.trim());
             } catch {
                 price = 'Цена не найдена';
             }
+            //ye В наличии
             const html = await page.content()
             inStock = html.includes('Добавить в корзину') ? 'Да' : 'Нет';
         }
 
         if(platform === 'ozon') {
             await page.goto(url, {waitUntil: 'networkidle2', timeout: 30000})
-
+            //ye Название товара
             try {
                 await page.waitForSelector('[data-widget="webProductHeading"]', {timeout: 10000});
                 title = await page.$eval('[data-widget="webProductHeading"]', el => el.innerText.trim())
             } catch {
                 title = 'Название не найдено';
             }
-
+            //ye Цена товара
             try {
                 price = await page.$eval('[class="pdp_b7f tsHeadline500Medium"]', el => el.innerText.trim());
             } catch {
                 price = 'Не определено';
             }
-            
+            //ye В наличии
             try {
                 await page.waitForSelector('[data-widget="webAddToCart"]', {timeout: 5000});
                 inStock = 'Да'
